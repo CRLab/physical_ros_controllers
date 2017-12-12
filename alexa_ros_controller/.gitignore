@@ -24,6 +24,7 @@ msg/_*.py
 # eclipse stuff
 .project
 .cproject
+.idea
 
 # qcreator stuff
 CMakeLists.txt.user
@@ -45,3 +46,8 @@ qtcreator-*
 
 # Catkin custom files
 CATKIN_IGNORE
+
+# dependency
+node_modules/
+alexa_ros_controller/node_modules/
+semg_ros_controller/node_modules/
