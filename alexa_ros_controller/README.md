@@ -1,6 +1,7 @@
 # alexa_ros_controller
 Submits received voice command actions to a ROS network from an Amazon Alexa.
 
+Install dependencies by running `npm install` in this folder
 
 First start up ROSBridge Websocket Server:
     
@@ -9,17 +10,22 @@ First start up ROSBridge Websocket Server:
 This opens up a ROSBridge connection on (default) localhost port 9090
 which then the Javascript file `rosbridge.js` can connect to.
 
+Then start up ngrok:
+
+    ngrok http 3000
+
 Run like so:
     
     node express_server.js
     
 This listens for json's sent by Amazon Alexa on localhost
 port 3000. Amazon Alexa json's are forwarded there via ngrok, so make sure
-that's set up correctly on the Amazon Developer Portal. 
+that's set up correctly on the Amazon Developer Portal by paste the ngrok https link onto the Alexa Skill "Configuration" page.
 
-You can feed test data from a ROS machine like so:
+You can feed test data through the `valid_commands` topic and `valid_commands_service` service with:
 
-    rostopic pub -r .1 /CurrentOptions external_controller_msgs/CurrentOptions '{data: ["next grasp", "back", "select grasp", "test"]}'
+    rosrun ros_physical_controller_manager valid_commands_service.py
+    
 
 
 ### API
