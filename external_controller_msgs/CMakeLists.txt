@@ -55,6 +55,7 @@ add_message_files(
     ValidCommands.msg
     ValidEnvironments.msg
     ValidInputs.msg
+    RawCurrentlySelectedCommand.msg
 )
 
 ## Generate services in the 'srv' folder
