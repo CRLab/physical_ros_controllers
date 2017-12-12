@@ -1,6 +1,7 @@
 # external_controller_msgs
 A helper package for the BCI interfaces.
-
+    
+    
 Import into your python script like so:
 
     from external_controller_msgs.msg import ValidCommands
@@ -15,6 +16,8 @@ Example of connecting to the /valid_commands_service server:
     rospy.wait_for_service('valid_commands_service')
     valid_commands_service = rospy.ServiceProxy('valid_commands_service', ValidCommandsService)
     resp = valid_commands_service('')
+    
+
 
 # ROS topics and services guide
 
