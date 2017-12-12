@@ -1,0 +1,4 @@
+string request
+---
+string[] inputs
+string[] statuses

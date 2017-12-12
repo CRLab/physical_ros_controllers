@@ -1,0 +1,2 @@
+string[] inputs
+string[] statuses

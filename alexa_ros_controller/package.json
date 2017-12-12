@@ -1,0 +1,26 @@
+{
+  "name": "alexa_ros_controller",
+  "version": "1.0.0",
+  "description": "Submits received voice command actions to a ROS network from an Amazon Alexa.",
+  "main": "express_server.js",
+  "dependencies": {
+    "alexa-sdk": "^1.0.14",
+    "aws-lambda-mock-context": "^3.1.1",
+    "express": "^4.16.0",
+    "roslib": "^0.19.0-SNAPSHOT"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CRLab/alexa_ros_controller.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CRLab/alexa_ros_controller/issues"
+  },
+  "homepage": "https://github.com/CRLab/alexa_ros_controller#readme"
+}

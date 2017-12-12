@@ -1,0 +1,2 @@
+string[] environments
+string current_environment

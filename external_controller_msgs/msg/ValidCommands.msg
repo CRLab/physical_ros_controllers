@@ -1,0 +1,3 @@
+string[] commands
+string parent
+string menutype

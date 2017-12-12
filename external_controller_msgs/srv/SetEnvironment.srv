@@ -1,0 +1,4 @@
+string environment
+bool status
+---
+bool result

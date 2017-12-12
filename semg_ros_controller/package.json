@@ -1,0 +1,16 @@
+{
+  "name": "semg_ros_controller",
+  "version": "1.0.0",
+  "main": "semg_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.0",
+    "roslib": "^0.19.0-SNAPSHOT"
+  },
+  "devDependencies": {},
+  "description": ""
+}
