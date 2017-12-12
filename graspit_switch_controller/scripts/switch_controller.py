@@ -195,6 +195,7 @@ class Communicator(object):
         self.publisher_execute_command = rospy.Publisher('/raw_execute_command', RawExecuteCommand, queue_size=10)
         self.publisher_currently_selected_command = rospy.Publisher('/currently_selected_command', String, queue_size=10)
 
+        print('waiting for service')
         rospy.wait_for_service('valid_commands_service')
         valid_commands_service = rospy.ServiceProxy('valid_commands_service', ValidCommandsService)
         resp = valid_commands_service('');

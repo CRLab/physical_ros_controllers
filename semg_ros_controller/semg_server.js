@@ -42,11 +42,14 @@ valid_commands_topic.subscribe(function(message) {
 
 // Calling a service
 
+console.log('Started node, now waiting for service. if you do not see "Result for service call on..." then the service was not found.');
+
 var valid_commands_service = new ROSLIB.Service({
     ros : ros,
     name : '/valid_commands_service',
     serviceType : 'external_controller_msgs/ValidCommandsService'
 });
+
 
 var request = new ROSLIB.ServiceRequest({
     request : ''
