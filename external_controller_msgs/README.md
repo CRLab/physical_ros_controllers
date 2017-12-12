@@ -1,14 +1,14 @@
 # external_controller_msgs
 A helper package for the BCI interfaces.
-    
-    
+
+
 Import into your python script like so:
 
     from external_controller_msgs.msg import ValidCommands
     from external_controller_msgs.srv import ValidCommandsService
-    
+
 Example of subscribing to the /valid_commands topic (python):
-    
+
     subscriber = rospy.Subscriber("/valid_commands", ValidCommands, callback)
 
 Example of connecting to the /valid_commands_service server:
@@ -16,7 +16,7 @@ Example of connecting to the /valid_commands_service server:
     rospy.wait_for_service('valid_commands_service')
     valid_commands_service = rospy.ServiceProxy('valid_commands_service', ValidCommandsService)
     resp = valid_commands_service('')
-    
+
 
 
 # ROS topics and services guide
@@ -52,7 +52,16 @@ ValidCommandsService.srv format:
 topic: `/currently_selected_command`
 
 type: `std_msgs/String`
-    
+
+### topic: raw_currently_selected_command
+topic: `/raw_currently_selected_command`
+
+RawCurrentlySelectedCommand.msg format:
+
+    string input_source
+    string command
+
+
 ### topic: raw_execute_command
 topic: `/raw_execute_command`
 
@@ -60,7 +69,7 @@ RawExecuteCommand.msg format:
 
     string input_source
     string command
-    
+
 ### topic: execute_command
 This is the command that the robot should execute, published by the `ros_physical_controller_manager`
 
@@ -84,7 +93,7 @@ SetInput.srv:
 topic: `/valid_environments`
 
 ValidEnvironments.msg:
-    
+
     string[] environments
     string current_environment    
 
@@ -92,12 +101,12 @@ ValidEnvironments.msg:
 topic: `/valid_environments_service`
 
 ValidEnvironmentsService.srv:
-    
+
     string request
     ---
     string[] environments
     string current_environment
-    
+
 
 
 ### service: set_environment_service
@@ -109,28 +118,30 @@ SetEnvironment.srv:
     bool status
     ---
     bool result
-    
-    
-    
+
+
+
 ### topic: valid_inputs
 topic: `valid_inputs`
 
 ValidInputs.msg:
-    
+
     string[] inputs
     string[] statuses
-    
+
 ### service: valid_inputs_service
 server: `valid_inputs_service`
 
 ValidInputsService.srv:
-    
+
     string request
     ---
     string[] inputs
     string[] statuses
-        
+
 ### topic: crui_bot
 topic: `/crui_bot_status`
 
 format: `std_msgs/String`
+
+The message string can be either `ready` or `loading`
