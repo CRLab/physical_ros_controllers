@@ -1,51 +1,46 @@
 # alexa_ros_controller
 Submits received voice command actions to a ROS network from an Amazon Alexa.
 
-Install dependencies by running `npm install` in this folder
+## Setup
+Ensure you have node installed. NVM is a good manager for this. Make sure you also have [ngrok](https://ngrok.com/) installed. Then install npm dependencies
+```bash
+$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+$ nvm install node
+$ npm install
+```
 
-First start up ROSBridge Websocket Server:
-    
-    roslaunch rosbridge_server rosbridge_websocket.launch
-
+## Running
+Ensure you have a roscore master running
+```bash
+$ roscore
+```
+Then make sure rosbridge websocket is running
+```bash
+roslaunch rosbridge_server rosbridge_websocket.launch
+```
 This opens up a ROSBridge connection on (default) localhost port 9090
-which then the Javascript file `rosbridge.js` can connect to.
 
-Then start up ngrok:
+Because Amazon expects an HTTPS server, ngrok is a good candidate for this. 
+```bash
+$ screen
+$ ngrok http 3000
+ctrl a+d
+```
+port 3000. Amazon Alexa json's are forwarded there via ngrok, so make sure that's set up correctly on the Amazon Developer Portal by paste the ngrok https link onto the Alexa Skill "Configuration" page.
 
-    ngrok http 3000
+Then run the alex_ros_node
+```bash
+node scripts/alexa_ros_node.js
+```
 
-Run like so:
-    
-    node express_server.js
-    
-This listens for json's sent by Amazon Alexa on localhost
-port 3000. Amazon Alexa json's are forwarded there via ngrok, so make sure
-that's set up correctly on the Amazon Developer Portal by paste the ngrok https link onto the Alexa Skill "Configuration" page.
+## Runtime dependencies
+This application expects the following:
+- A node on the network is sending and receiving commands data
 
-You can feed test data through the `valid_commands` topic and `valid_commands_service` service with:
+Your ROS node will have to be listening/publishing on the following topics:
+- Publisher(`/raw_execute_command`, external_controller_msgs.msg.RawExecuteCommand)
+- Subscriber(`/valid_commands`, external_controller_msgs.msg.ValidCommands)
+- Service(`valid_commands_service`, external_controller_msgs.srv.CurrentCommands)
 
-    rosrun ros_physical_controller_manager valid_commands_service.py
-    
-
-
-### API
-
-Uses an API of three ROS topics:
-
-    /CurrentOptions
-    /CurrentlySelectedOption
-    /ExecuteOption
-
-It listens on the /CurrentOptions topic for valid interface commands.
-Once a valid voice command is received, it publishes that command to /ExecuteOption.
-
-The voice interface doesn't publish anything on /CurrentlySelectedOption.
-
-Listen to what it does:
-    
-    rostopic echo /ExecuteOption
-    
-If having problems with running express_server.js (e.g. can't find dependencies)
-run `npm init` on the project directory (using default options),
-then delete the node_modules folder,
-and run `npm install` in the project directory. It will automatically reinstall all the required dependencies.
+## Description
+The script `libs/ros_api.js` will initialize all ros subscribers/publishers and therefore must only be run after rosbridge has been initialized.

@@ -1,10 +1,37 @@
 # physical_ros_controllers
 
+A series of packages dedicated to allowing convenient use of various assistive input devices into a ROS network
 
-Start a test valid_commands_service server ("back", "test", "exit" )using:
+## Launch file configuration
+```xml
+<launch>
+    <group ns="physical_ros_controllers">
+        <!-- Controller Manager -->
+        <node name="controller_manager" pkg="ros_physical_controller_manager" type="ros_physical_controller_manager_node.py" output="screen"/>
+        <!-- Controllers -->
+        <node name="alexa_ros_node" pkg="alexa_ros_controller" type="alexa_ros_node.js" output="screen"/>
+        <node name="switch_ros_node" pkg="switch_ros_controller" type="switch_ros_node.py" output="screen"/>
+        <node name="semg_ros_node" pkg="semg_ros_controller" type="semg_ros_node.js" output="screen"/>
+    </group>
+</launch>
+```
 
-    rosrun ros_physical_controller_manager valid_commands_service.py
-    
+## More Info
+- [ros_physical_controller_manager](ros_physical_controller_manager/README.md)
+- [external_controller_msgs](external_controller_msgs/README.md)
+- [alex_ros_controller](alexa_ros_controller/README.md)
+- [semg_ros_controller](semg_ros_controller/README.md)
+- [switch_ros_controller](switch_ros_controller/README.md)
+
+## Testing
+
+Start a test valid_commands_service server ("back", "test", "exit") with:
+```bash
+$ python ros_physical_controller_manager/tests/valid_commands_service_test.py
+...in another tab...
+$ rosrun semg_ros_controller semg_ros_node.js
+```
+  
 ### ROS topics and services used by this package
 
 Needs these topics from backend:
@@ -28,91 +55,5 @@ Creates the following service servers:
 
     /set_input_service
     /valid_inputs_server
-
-### topic: valid_commands
-Contains valid commands at current point in the program. Only updated when there is a change.
-
-topic: `/valid_commands`
-
-ValidCommands.msg format:
-
-    string[] commands
-    string parent #command last executed
-    string menutype #can be "menu" or "submenu"
-
-### service: valid_commands_service (for initialization)
-Returns valid commands at current point in the program. Each controller calls the server at startup
-to get a list of commands. (otherwise, the user may try to select something before the commands get published on the topic)
-
-server: `valid_commands_service`
-
-ValidCommandsService.srv format:
-
-    string request #empty string
-    --- #stuff to return
-    string[] commands
-    string parent #command last executed
-    string menutype #can be "menu" or "submenu"
-
-
-### topic: raw_currently_selected_command
-
-
-### topic: currently_selected_command
-Applies to the Ultimate Switch and mouse. Updates the topic with whatever command the user is currently hovering on.
-Relevant for updating the UI.
-
-topic: `/currently_selected_command`
-
-type: `std_msgs/String`
     
-### topic: raw_execute_command
-topic: `/raw_execute_command`
-
-RawExecuteCommand.msg format:
-
-    string input_source
-    string command
-    
-### topic: execute_command
-This is the command that goes to the backend (aka what the robot should execute), published by the `ros_physical_controller_manager` after it
-has filtered for disabled inputs.
-
-topic: `/execute_command`
-
-type: `std_msgs/String`
-
-### service: set_input_service
-Turns inputs on and off, `status` should be True for on and False for off
-
-server: `set_input_service`
-
-SetInput.srv:
-
-    string input_source
-    bool status
-    ---
-    bool result
-
-    
-### topic: valid_inputs
-topic: `valid_inputs`
-
-ValidInputs.msg:
-    
-    string[] inputs
-    string[] statuses
-    
-### service: valid_inputs_service
-server: `valid_inputs_service`
-
-ValidInputsService.srv:
-    
-    string request
-    ---
-    string[] inputs
-    string[] statuses
-        
-### topic: crui_bot
-topic: `/crui_bot_status`
-
+For more info on the message types look [here](external_controller_msgs/README.md)

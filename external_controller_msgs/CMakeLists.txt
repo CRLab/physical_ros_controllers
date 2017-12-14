@@ -66,9 +66,6 @@ add_service_files(
     CurrentInputs.srv
     CurrentEnvironments.srv
     SetEnvironment.srv
-    ValidEnvironmentsService.srv
-    ValidInputsService.srv
-    ValidCommandsService.srv
 )
 
 ## Generate actions in the 'action' folder

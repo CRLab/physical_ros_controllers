@@ -1,9 +1,8 @@
 "use strict";
 
 var   Alexa           = require("alexa-sdk");
-var   rosbridge       = require('./rosbridge.js'); //for communication with ROS
+const ros_api         = require("./ros_api.js");
 
-const APP_ID = undefined;
 const HELP_MESSAGE = 'You can give me any command you see through the Graspit interface. Please tell me your command.';
 const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
@@ -27,17 +26,17 @@ var handlers = {
     "SendCommandIntent": function () {
         const commandSlot = this.event.request.intent.slots.Command;
         var commandName;
-        var validPhrases = rosbridge.returnValidPhrases();
-        console.log("phrases: " + validPhrases);
+        var validPhrases = ros_api.returnValidPhrases();
+        ros_api.log("phrases: " + validPhrases);
 
         if(commandSlot && commandSlot.value){
             commandName = commandSlot.value;
 
-            console.log(commandName);
-            if(validPhrases.indexOf(commandName) != -1){
+            ros_api.log(commandName);
+            if(validPhrases.indexOf(commandName) !== -1){
                 this.response.speak("Command received");
-                console.log("valid command received: " + commandName);
-                rosbridge.publishCommand(commandName);
+                ros_api.log("valid command received: " + commandName);
+                ros_api.publishCommand(commandName);
 
             }
             else{
@@ -47,8 +46,6 @@ var handlers = {
         else{
             this.response.speak("No command received");
         }
-
-        //const command = myCommandList[commandName]
 
         this.emit(':responseReady');
     }

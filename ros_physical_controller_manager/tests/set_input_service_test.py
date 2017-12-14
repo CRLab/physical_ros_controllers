@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import rospy
-from std_msgs.msg import String
 from external_controller_msgs.srv import SetInput
 
 rospy.wait_for_service('set_input_service')

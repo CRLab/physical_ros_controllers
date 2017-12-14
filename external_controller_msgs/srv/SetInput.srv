@@ -1,5 +1,4 @@
 string input_source
 bool status
-
 ---
 bool result
