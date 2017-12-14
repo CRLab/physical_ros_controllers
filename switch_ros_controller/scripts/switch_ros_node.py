@@ -16,7 +16,7 @@ import Tkinter as Tk
 from std_msgs.msg import String
 from external_controller_msgs.msg import ValidCommands
 from external_controller_msgs.msg import RawExecuteCommand
-from external_controller_msgs.srv import ValidCommandsService
+from external_controller_msgs.srv import CurrentCommands
 
 
 """
@@ -132,7 +132,8 @@ class TapDetector(object):
 class AudioOutput(object):
     def __init__(self):
         pygame.init()
-        package_path = rospkg.get_ros_package_path()
+        rospack = rospkg.RosPack()
+        package_path = rospack.get_path('switch_ros_controller')
         self.waiting_file = os.path.join(package_path, 'resources', 'waiting.wav')
         self.next_file = os.path.join(package_path, 'resources', 'next.wav')
         self.select_file = os.path.join(package_path, 'resources', 'select.wav')
@@ -190,7 +191,7 @@ class Communicator(object):
 
         rospy.loginfo('waiting for service')
         rospy.wait_for_service('/valid_commands_service')
-        valid_commands_service = rospy.ServiceProxy('/valid_commands_service', ValidCommandsService)
+        valid_commands_service = rospy.ServiceProxy('/valid_commands_service', CurrentCommands)
         resp = valid_commands_service()
         rospy.loginfo(resp)
         self.currentCommands = resp.commands
@@ -306,19 +307,18 @@ class UserInterfaceFrame(Tk.Frame):
         self.manage_queue()
 
     def info(self):
-        rospy.loginfo("This program controls Graspit! using an assistive controller with a 3.5mm jack input")
-        rospy.loginfo(BColors.OKBLUE + "Blue color designates that the output is going to send a NEXT signal" + BColors.ENDC)
-        rospy.loginfo(BColors.WARNING + "Yellow color designates that the output is going to send a SELECT signal" + BColors.ENDC)
-        rospy.loginfo(BColors.HEADER + "Purple color designates that the output is waiting for user input" + BColors.ENDC)
-        rospy.loginfo(BColors.OKGREEN + "Green color designates that a signal was sent" + BColors.ENDC)
-        rospy.loginfo("Hold the switch for %0.2f to %0.2f second(s) if you want to send a NEXT signal" % (Communicator.WAIT_THRESHOLD, Communicator.NEXT_THRESHOLD))
-        rospy.loginfo("Hold the switch for %0.2f to %0.2f second(s) if you want to send a SELECT signal" % (Communicator.NEXT_THRESHOLD, Communicator.SELECT_THRESHOLD))
-        rospy.loginfo()
+        print("This program controls Graspit! using an assistive controller with a 3.5mm jack input")
+        print(BColors.OKBLUE + "Blue color designates that the output is going to send a NEXT signal" + BColors.ENDC)
+        print(BColors.WARNING + "Yellow color designates that the output is going to send a SELECT signal" + BColors.ENDC)
+        print(BColors.HEADER + "Purple color designates that the output is waiting for user input" + BColors.ENDC)
+        print(BColors.OKGREEN + "Green color designates that a signal was sent" + BColors.ENDC)
+        print("Hold the switch for %0.2f to %0.2f second(s) if you want to send a NEXT signal" % (Communicator.WAIT_THRESHOLD, Communicator.NEXT_THRESHOLD))
+        print("Hold the switch for %0.2f to %0.2f second(s) if you want to send a SELECT signal" % (Communicator.NEXT_THRESHOLD, Communicator.SELECT_THRESHOLD))
 
     def print_output(self, msg):
         output = "%s%s" % (msg, " " * (self.size_str - len(msg)))
         self.size_str = len(output)
-        rospy.loginfo(output, end='\r')
+        print(output, end='\r')
         sys.stdout.flush()
 
     def press_switch(self):

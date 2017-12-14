@@ -10,7 +10,7 @@ rosnodejs.initNode('/physical_ros_controllers/alexa_ros_node', {}).then(function
     var valid_commands;
 
     const valid_commands_sub = nh.subscribe('/valid_commands', 'external_controller_msgs/ValidCommands', function(message) {
-        rosnodejs.log.info('Current valid options from ' + valid_commands_topic.name + ': ' + message.commands);
+        rosnodejs.log.info('Current valid options from ' + '/valid_commands' + ': ' + message.commands);
         valid_commands = message.commands;
     });
 
