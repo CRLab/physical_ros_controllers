@@ -40,14 +40,8 @@ class ControllerNode:
         if srv.input_source == 'mouse':
             self.mouse = srv.status
 
-        rospy.loginfo("Received input manager update. Details: ")
-        rospy.loginfo(srv.input_source)
-        rospy.loginfo(srv.status)
-        rospy.loginfo("Alexa, sEMG, switch, mouse status:")
-        rospy.loginfo(self.alexa)
-        rospy.loginfo(self.semg)
-        rospy.loginfo(self.switch)
-        rospy.loginfo(self.mouse)
+        rospy.loginfo("Received input manager update. Details: {}, {}".format(srv.input_source, srv.status))
+        rospy.loginfo("Statuses: Alexa={} | sEMG={} | switch={} | mouse={}".format(self.alexa, self.semg, self.switch, self.mouse))
 
         return True
 
