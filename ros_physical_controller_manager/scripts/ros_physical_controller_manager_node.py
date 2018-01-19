@@ -16,8 +16,8 @@ class ControllerNode:
         self.raw_execute_command_subscriber = rospy.Subscriber('/raw_execute_command', RawExecuteCommand, self.callback)
         self.publisher_network = rospy.Publisher('/execute_command', String, queue_size=10)
 
-        self.input_manager = rospy.Service('set_input_service', SetInput, self.handle_input_status)
-        self.current_inputs_service = rospy.Service('valid_commands_service', CurrentInputs, self.get_current_inputs)
+        self.input_manager = rospy.Service('/set_input_service', SetInput, self.handle_input_status)
+        self.current_inputs_service = rospy.Service('/current_inputs', CurrentInputs, self.get_current_inputs)
 
     def callback(self, msg):
         source = msg.input_source
@@ -28,6 +28,7 @@ class ControllerNode:
             self.publisher_network.publish(msg.command)
 
     def handle_input_status(self, srv):
+        rospy.loginfo("Updating input status: {}".format(srv))
         if srv.input_source == 'alexa':
             self.alexa = srv.status
 
@@ -45,11 +46,13 @@ class ControllerNode:
 
         return True
 
-    def get_current_inputs(self):
+    def get_current_inputs(self, srv):
+        rospy.loginfo("Getting current inputs")
         response = CurrentInputsResponse()
         response.inputs = ['alexa', 'semg', 'switch', 'mouse']
         response.statuses = [self.alexa, self.semg, self.switch, self.mouse]
         return response
+
 
 if __name__ == '__main__':
     rospy.init_node('ros_physical_controller')
